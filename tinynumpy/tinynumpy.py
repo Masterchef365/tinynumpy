@@ -38,19 +38,19 @@ certain features may not be supported.
 # todo: logspace, meshgrid
 # todo: Fortran order?
 
-from __future__ import division
-from __future__ import absolute_import
+#from __future__ import division
+#from __future__ import absolute_import
 
 import sys
-import ctypes
+#import ctypes
 
 from math import sqrt
-from copy import copy, deepcopy
-from collections import Iterable
-import operator
+#from copy import copy, deepcopy
+#from _collections import Iterable
+import _operator as operator
 
-import tinynumpy.tinylinalg as linalg
-from tinynumpy.tinylinalg import LinAlgError as LinAlgError
+#import tinynumpy.tinylinalg as linalg
+#from tinynumpy.tinylinalg import LinAlgError as LinAlgError
 
 # Python 2/3 compat
 if sys.version_info >= (3, ):
@@ -60,17 +60,17 @@ if sys.version_info >= (3, ):
 __version__ = '0.0.1dev'
 
 # Define dtypes: struct name, short name, numpy name, ctypes type
-_dtypes = [('B', 'b1', 'bool', ctypes.c_bool),
-           ('b', 'i1', 'int8', ctypes.c_int8),
-           ('B', 'u1', 'uint8', ctypes.c_uint8),
-           ('h', 'i2', 'int16', ctypes.c_int16),
-           ('H', 'u2', 'uint16', ctypes.c_uint16),
-           ('i', 'i4', 'int32', ctypes.c_int32),
-           ('I', 'u4', 'uint32', ctypes.c_uint32),
-           ('q', 'i8', 'int64', ctypes.c_int64),
-           ('Q', 'u8', 'uint64', ctypes.c_uint64),
-           ('f', 'f4', 'float32', ctypes.c_float),
-           ('d', 'f8', 'float64', ctypes.c_double),
+_dtypes = [('B', 'b1', 'bool'),
+           ('b', 'i1', 'int8'),
+           ('B', 'u1', 'uint8'),
+           ('h', 'i2', 'int16'),
+           ('H', 'u2', 'uint16'),
+           ('i', 'i4', 'int32'),
+           ('I', 'u4', 'uint32'),
+           ('q', 'i8', 'int64'),
+           ('Q', 'u8', 'uint64'),
+           ('f', 'f4', 'float32'),
+           ('d', 'f8', 'float64'),
            ]
 
 # Inject common dtype names
@@ -87,8 +87,11 @@ def _convert_dtype(dtype, to='numpy'):
     """
     if dtype is None:
         return dtype
+    if to == 'ctypes':
+        return dtype
+
     dtype = str(dtype)
-    index = {'array':0, 'short':1, 'numpy':2, 'ctypes':3}[to]
+    index = {'array':0, 'short':1, 'numpy':2}[to]
     for dd in _dtypes:
         if dtype in dd:
             return dd[index]
@@ -559,7 +562,7 @@ class ndarray(object):
             raise RuntimeError('ndarray order parameter is not supported')
         # Check and set shape
         try : 
-            assert isinstance(shape, Iterable)
+            #assert isinstance(shape, Iterable)
             shape = tuple(shape)
         except Exception as e:
             raise AssertionError('The shape must be tuple or list')
